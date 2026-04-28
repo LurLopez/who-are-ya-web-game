@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="eu" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jokalari Berria - Admin Panel</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <link href="/main.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 min-h-screen flex flex-col">
+
+    <nav class="w-full bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2">
+                        <span class="text-indigo-600 dark:text-indigo-400">Admin</span>Panel
+                    </h1>
+                </div>
+                
+                <div class="flex items-center space-x-4">
+                    <span class="text-sm text-gray-500 dark:text-gray-400 hidden sm:inline">
+                        Kaixo, <%= (typeof user !== 'undefined' && user.name) ? user.name : 'Admin' %>
+                    </span>
+                    <a href="/admin" class="text-gray-500 hover:text-blue-600 dark:text-gray-300 transition text-sm font-medium">
+                        Kudeaketara itzuli
+                    </a>
+                    <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-4 rounded text-sm transition duration-300">
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-4xl w-full mx-auto py-10 px-4 sm:px-6 lg:px-8">
+        
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">
+                    Jokalari Berria
+                </h2>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
+                    Bete formularioa jokalari berri bat datu-basera gehitzeko.
+                </p>
+            </div>
+            <a href="/admin" class="text-sm text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">
+                &larr; Atzera
+            </a>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div class="p-6 sm:p-8">
+                
+                <form id="createPlayerForm" class="space-y-6">
+
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+
+                        <div class="sm:col-span-2">
+                            <label for="id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Jokalari ID *
+                            </label>
+                            <div class="mt-1">
+                                <input type="number" name="id" id="id" required
+                                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white"
+                                    placeholder="Adib: 123">
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-4">
+                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Izen osoa *
+                            </label>
+                            <div class="mt-1">
+                                <input type="text" name="name" id="name" required minlength="2" maxlength="100"
+                                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white"
+                                    placeholder="Jokalariaren izena">
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="nationality" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Nazionalitatea *
+                            </label>
+                            <div class="mt-1">
+                                <input type="text" name="nationality" id="nationality" required
+                                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white"
+                                    placeholder="Adib: Spain">
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="birthdate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Jaiotze-data
+                            </label>
+                            <div class="mt-1">
+                                <input type="date" name="birthdate" id="birthdate"
+                                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white">
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="teamId" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Taldearen ID *
+                            </label>
+                            <div class="mt-1">
+                                <input type="number" name="teamId" id="teamId" required
+                                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white"
+                                    placeholder="Taldearen ID zenbakia">
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="leagueId" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Ligaren ID *
+                            </label>
+                            <div class="mt-1">
+                                <input type="number" name="leagueId" id="leagueId" required
+                                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white"
+                                    placeholder="Ligaren ID zenbakia">
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="position" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Posizioa *
+                            </label>
+                            <div class="mt-1">
+                                <select id="position" name="position" required
+                                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white">
+                                    <option value="" disabled selected>Aukeratu...</option>
+                                    <option value="GK">Atezaina (GK)</option>
+                                    <option value="DF">Defentsa (DF)</option>
+                                    <option value="MF">Erdilaria (MF)</option>
+                                    <option value="FW">Aurrelaria (FW)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="number" class="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                                Zenbakia (1-99)
+                            </label>
+                            <div class="mt-1">
+                                <input type="number" name="number" id="number" min="1" max="99"
+                                    class="block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm dark:bg-gray-700 dark:text-white"
+                                    placeholder="Adib: 10">
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                    <div class="pt-5 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3">
+                        <a href="/admin"
+                           class="bg-white dark:bg-gray-700 py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Ezeztatu
+                        </a>
+                        <button type="submit"
+                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150">
+                            Sortu
+                        </button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.getElementById('logoutBtn').addEventListener('click', async () => {
+            try {
+                await fetch('/api/users/logout', { method: 'POST' });
+                window.location.href = '/login';
+            } catch (err) { console.error(err); }
+        });
+
+        
+        document.getElementById('createPlayerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            console.log("Hemen joango da zure logika...");
+
+            const formData = new FormData(e.target);
+            const rawData = Object.fromEntries(formData.entries());
+            
+            const playerToSave = {
+                id: parseInt(rawData.id),
+                name: rawData.name,
+                nationality: rawData.nationality,
+                birthdate: rawData.birthdate || null,
+                teamId: parseInt(rawData.teamId),
+                leagueId: parseInt(rawData.leagueId),
+                position: rawData.position,
+                number: rawData.number ? parseInt(rawData.number) : null,
+            };
+            try {
+            const response = await fetch('/api/players', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(playerToSave)
+            });
+            const result = await response.json();
+
+            if (response.ok) {
+            // Dena ondo badoa, mezu bat erakutsi eta adminera itzuli
+            
+
+            alert('Jokalaria ondo sortu da!');
+            } else {
+            console.error("Erroreak:", result.error);
+            }
+
+            }catch(err){
+            console.error('Konexio errorea:', err);
+        }
+       
+
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="eu" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jokalaria Kudeatu - Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <link href="/main.css" rel="stylesheet">
+</head>
+<body class="bg-gray-50 dark:bg-gray-900 text-gray-900 dark:text-white transition-colors duration-300 min-h-screen flex flex-col">
+
+    <nav class="w-full bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold tracking-tight flex items-center gap-2">
+                        <span class="text-indigo-600 dark:text-indigo-400">Admin</span>Panel
+                    </h1>
+                </div>
+                <button id="logoutBtn" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-4 rounded text-sm transition duration-300">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow max-w-4xl w-full mx-auto py-10 px-4 sm:px-6 lg:px-8">
+        
+        <div class="mb-8 flex items-center justify-between">
+            <div>
+                <h2 class="text-3xl font-bold text-gray-900 dark:text-white">Jokalaria Kudeatu</h2>
+                <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">Kudeatu jokalarien datuak ID bidez.</p>
+            </div>
+            <a href="/admin" class="text-sm text-indigo-600 hover:text-indigo-500 dark:text-indigo-400">&larr; Atzera</a>
+        </div>
+
+        <div class="bg-white dark:bg-gray-800 shadow-lg rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700">
+            <div class="p-6 sm:p-8">
+                
+                <form id="managePlayerForm" class="space-y-6">
+                    <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+
+                        <div class="sm:col-span-6 flex items-end gap-2">
+                            <div class="flex-grow">
+                                <label for="id" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jokalari ID *</label>
+                                <input type="number" name="id" id="id" required
+                                    class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm dark:bg-gray-700 dark:text-white focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                            <button type="button" id="fetchPlayerBtn"
+                                class="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium rounded-md shadow-sm transition duration-150 sm:text-sm">
+                                Bilatu
+                            </button>
+                            <button type="button" id="deletePlayerBtn"
+                                class="px-4 py-2 bg-red-600 hover:bg-red-700 text-white font-medium rounded-md shadow-sm transition duration-150 sm:text-sm">
+                                Ezabatu
+                            </button>
+                        </div>
+
+                        <div class="sm:col-span-6">
+                            <label for="name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Izen osoa *</label>
+                            <input type="text" name="name" id="name" required
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm dark:bg-gray-700 dark:text-white sm:text-sm">
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="nationality" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Nazionalitatea *</label>
+                            <input type="text" name="nationality" id="nationality" required
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm dark:bg-gray-700 dark:text-white sm:text-sm">
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="birthdate" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Jaiotze-data</label>
+                            <input type="date" name="birthdate" id="birthdate"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm dark:bg-gray-700 dark:text-white sm:text-sm">
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="teamId" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Taldearen ID *</label>
+                            <input type="number" name="teamId" id="teamId" required
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm dark:bg-gray-700 dark:text-white sm:text-sm">
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="leagueId" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Ligaren ID *</label>
+                            <input type="number" name="leagueId" id="leagueId" required
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm dark:bg-gray-700 dark:text-white sm:text-sm">
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="position" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Posizioa *</label>
+                            <select id="position" name="position" required
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm dark:bg-gray-700 dark:text-white sm:text-sm">
+                                <option value="GK">Atezaina (GK)</option>
+                                <option value="DF">Defentsa (DF)</option>
+                                <option value="MF">Erdilaria (MF)</option>
+                                <option value="FW">Aurrelaria (FW)</option>
+                            </select>
+                        </div>
+
+                        <div class="sm:col-span-3">
+                            <label for="number" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Zenbakia</label>
+                            <input type="number" name="number" id="number" min="1" max="99"
+                                class="mt-1 block w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm dark:bg-gray-700 dark:text-white sm:text-sm">
+                        </div>
+                    </div>
+
+                    <div class="pt-5 border-t border-gray-200 dark:border-gray-700 flex justify-end gap-3">
+                        <a href="/admin"
+                           class="bg-white dark:bg-gray-700 py-2 px-4 border border-gray-300 dark:border-gray-600 rounded-md shadow-sm text-sm font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-50 dark:hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                            Ezeztatu
+                        </a>
+                        <button type="submit"
+                            class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500 transition duration-150">
+                            Aldatu
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // Bilatu botoia
+        document.getElementById('fetchPlayerBtn').addEventListener('click', async () => {
+            const id = document.getElementById('id').value;
+            if (!id) return alert("Sartu ID bat mesedez.");
+        try{
+            const response = await fetch(`/api/players/${id}`);
+            const result = await response.json();
+
+        if (response.ok) {
+            const player = result.data; // Zure controller-ak 'data' barruan bidaltzen badu
+
+            // 2. Formularioa bete datu-baseko balioekin
+            document.getElementById('name').value = player.name || '';
+            document.getElementById('nationality').value = player.nationality || '';
+            
+            // DATAK: HTML <input type="date"> formatoak 'YYYY-MM-DD' izan behar du
+            if (player.birthdate) {
+                document.getElementById('birthdate').value = player.birthdate.split('T')[0];
+            } else {
+                document.getElementById('birthdate').value = '';
+            }
+
+            document.getElementById('teamId').value = player.teamId || '';
+            document.getElementById('leagueId').value = player.leagueId || '';
+            document.getElementById('position').value = player.position || '';
+            document.getElementById('number').value = player.number || '';
+
+            alert("Jokalaria aurkitu eta kargatu da.");
+        } else {
+            alert("Ez da aurkitu ID hori duen jokalaririk.");
+            garbituFormularioa();
+        }
+    }catch(err){
+        console.error('Errorea bilatzean:', err);
+        alert('Ezin izan da zerbitzariarekin konektatu.');
+    }
+    });
+
+        // Ezabatu botoia
+        document.getElementById('deletePlayerBtn').addEventListener('click', async () => {
+            const id = document.getElementById('id').value;
+            if (!id) return alert("Bilatu jokalari bat ezabatu aurretik.");
+            if (confirm("Ziur zaude jokalaria ezabatu nahi duzula?")) {
+        try {
+            const response = await fetch(`/api/players/${id}`, {
+            method: 'DELETE',
+            headers: {
+            'Content-Type': 'application/json'
+            }
+        });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert("Jokalaria arrakastaz ezabatu da.");
+                garbituFormularioa();
+            } else {
+                alert("Errorea: " + (result.msg || "Ezin izan da jokalaria ezabatu."));
+            }
+        } catch (err) {
+            console.error('Errorea ezabatzean:', err);
+            alert('Konexio errorea zerbitzariarekin.');
+    }
+            }
+        });
+
+        // Aldatu 
+        document.getElementById('managePlayerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            // 1.  Formularioaren datu berriak bildu
+            const id = document.getElementById('id').value;
+
+            const formData = new FormData(e.target);
+            const rawData = Object.fromEntries(formData.entries());
+    
+            // 2  Datuak prestatu (Mongoose-k itxaroten duen moduan)
+            const playerToUpdate = {
+            id: parseInt(id),
+            name: rawData.name,
+            nationality: rawData.nationality,
+            birthdate: rawData.birthdate || null,
+            teamId: parseInt(rawData.teamId),
+            leagueId: parseInt(rawData.leagueId),
+            position: rawData.position,
+            number: rawData.number ? parseInt(rawData.number) : null
+            };
+
+        try {
+            // 3.   Bidali PUT eskaera API-ra
+            const response = await fetch(`/api/players/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(playerToUpdate)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                alert("Jokalaria arrakastaz eguneratu da!");
+                garbituFormularioa();
+            } else {
+            alert("Errorea: " + (result.msg || "Ezin izan da eguneratu"));
+            }
+        } catch (err) {
+            console.error('Errorea eguneratzean:', err);
+            alert('Konexio errorea zerbitzariarekin.');
+        }
+        });
+
+    function garbituFormularioa() {
+    const fields = ['id','name', 'nationality', 'birthdate', 'teamId', 'leagueId', 'position', 'number'];
+    fields.forEach(field => document.getElementById(field).value = '');
+    }
+    
+    </script>
+</body>
+</html>

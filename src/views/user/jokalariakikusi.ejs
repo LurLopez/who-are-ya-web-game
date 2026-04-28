@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="eu" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jokalarien Zerrenda</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 min-h-screen text-gray-800 dark:text-gray-200">
+
+    <div class="container mx-auto py-8 px-4">
+        
+        <div class="mb-6">
+            <a href="/" class="inline-flex items-center px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-bold rounded-lg transition duration-300 shadow-md">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Hasierara itzuli
+            </a>
+        </div>
+
+        <h1 class="text-3xl font-bold mb-6 text-center text-indigo-600 dark:text-indigo-400">Jokalarien Zerrenda</h1>
+
+        <div class="overflow-x-auto bg-white dark:bg-gray-800 shadow-md rounded-lg">
+            <table class="min-w-full table-auto">
+                <thead class="bg-indigo-600 text-white">
+                    <tr>
+                        <th class="px-4 py-3 text-left">Argazkia</th>
+                        <th class="px-4 py-3 text-left">ID</th>
+                        <th class="px-4 py-3 text-left">Izen Osoa</th>
+                        <th class="px-4 py-3 text-left">Nazionalitatea</th>
+                        <th class="px-4 py-3 text-left">Jaiotze Data</th>
+                        <th class="px-4 py-3 text-left">Talde ID</th>
+                        <th class="px-4 py-3 text-left">Liga ID</th>
+                        <th class="px-4 py-3 text-left">Posizioa</th>
+                        <th class="px-4 py-3 text-left">Zenbakia</th>
+                    </tr>
+                </thead>
+                <tbody id="playerTableBody" class="divide-y divide-gray-200 dark:divide-gray-700">
+                    </tbody>
+            </table>
+        </div>
+
+        <div class="mt-6 flex justify-between items-center bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm">
+            <button id="prevPage" class="flex items-center text-indigo-600 font-bold disabled:text-gray-400">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7" />
+                </svg>
+                Aurrekoak
+            </button>
+
+            <span id="pageInfo" class="text-sm font-medium text-gray-500">
+                Orrialdea: 1
+            </span>
+
+            <button id="nextPage" class="flex items-center text-indigo-600 font-bold disabled:text-gray-400">
+                Hurrengoak
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        const limit = 10;
+
+        async function fetchPlayers(page) {
+            try {
+                const response = await fetch(`/api/players?page=${page}&limit=${limit}`);
+                const result = await response.json();
+
+                if (result.success) {
+                    renderTable(result.data);
+                    updatePagination(result.page, result.pages);
+                }
+            } catch (error) {
+                console.error("Errorea datuak lortzean:", error);
+            }
+        }
+
+        function renderTable(players) {
+            const tbody = document.getElementById('playerTableBody');
+            tbody.innerHTML = ''; 
+
+            players.forEach(player => {
+                const row = `
+                    <tr class="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors">
+                        <td class="px-4 py-3"><img src="/images/players/${player.id}.png" class="w-10 h-10 rounded-full" onerror="this.src='/images/players/default.png'"></td>
+                        <td class="px-4 py-3 text-sm">${player.id}</td>
+                        <td class="px-4 py-3 font-semibold">${player.name}</td>
+                        <td class="px-4 py-3">${player.nationality}</td>
+                        <td class="px-4 py-3 text-sm">${player.birthdate ? new Date(player.birthdate).toLocaleDateString() : '---'}</td>
+                        <td class="px-4 py-3">${player.teamId}</td>
+                        <td class="px-4 py-3">${player.leagueId}</td>
+                        <td class="px-4 py-3"><span class="bg-gray-200 dark:bg-gray-600 px-2 py-1 rounded text-xs">${player.position}</span></td>
+                        <td class="px-4 py-3 font-bold">${player.number}</td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+        function updatePagination(current, total) {
+            currentPage = current;
+            document.getElementById('pageInfo').innerText = `Orrialdea: ${current} / ${total}`;
+            document.getElementById('prevPage').disabled = (current === 1);
+            document.getElementById('nextPage').disabled = (current === total || total === 0);
+        }
+
+        document.getElementById('prevPage').addEventListener('click', () => {
+            if (currentPage > 1) fetchPlayers(currentPage - 1);
+        });
+
+        document.getElementById('nextPage').addEventListener('click', () => {
+            fetchPlayers(currentPage + 1);
+        });
+
+        fetchPlayers(currentPage);
+    </script>
+</body>
+</html>
